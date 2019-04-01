@@ -167,7 +167,7 @@ More specifically %s""" % (data["path"],e)] + ["</pre>"]
             outlines = (x for x in ext_lines if flt(x))
         else :
             outlines = ext_lines
-        return ["<pre>"] + [x.decode('utf-8') for x in outlines] + ["</pre>"]
+        return ["<pre>"] + [x for x in outlines] + ["</pre>"]
 
 class SimpleRawTranscludeBlock() :
     def __init__(self,env) :
@@ -206,7 +206,7 @@ class CSVBlock() :
             with open(data["path"]) as csvfile :
                 reader = csv.reader(csvfile, delimiter=',', quotechar='"')
                 for row in reader:
-                    build = build + "<tr><td>" + '</td><td>'.join((i.decode("utf-8") for i in row)) + "</td></tr>\n"
+                    build = build + "<tr><td>" + '</td><td>'.join((i for i in row)) + "</td></tr>\n"
                 return ["""\n<table class="table table-striped table-bordered table-condensed">
     %s    
     </table>""" % build]

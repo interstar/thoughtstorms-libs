@@ -39,7 +39,7 @@ class PageStore :
         file_name = self.fName(pName)
         try :
             with open(file_name) as f :
-                return f.read().decode("utf-8")
+                return f.read()
         except Exception as e :
             if "No such file or directory:" in "%s"%e :
                 return no_file_handler(pName,e)
@@ -50,7 +50,7 @@ class PageStore :
         file_name = self.old_fName(pName)
         try :
             with open(file_name) as f :
-                return f.read().decode("utf-8")
+                return f.read()
         except Exception as e :
             if "No such file or directory:" in "%s"%e :
                 return no_file_handler(pName,e)
@@ -269,7 +269,7 @@ class WritablePageStore(PageStore) :
             ensure_linkbin(sendpage)
             self.append(sendpage,"{=LinkBin=}",sendtxt)
             print(lb)
-            self.put("LinkBin",lb.encode("utf-8"))
+            self.put("LinkBin",lb)
         
         return lb
        

@@ -119,27 +119,27 @@ class PreBlock() :
 
 class YouTubeBlock() :
     def evaluate(self,lines) :
-        data = yaml.load("\n".join(lines))
+        data = yaml.safe_load("\n".join(lines))
         return ["""<div class="youtube-embedded"><iframe width="400" height="271" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe></div>""" % data["id"]]
 
 class SoundCloudIndividualBlock() :
     def evaluate(self,lines) :
-        data = yaml.load("\n".join(lines))
+        data = yaml.safe_load("\n".join(lines))
         return [r"""<iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/""" + "%s" % data["id"] + """&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>"""]
 
 class SoundCloudBlock() :
     def evaluate(self,lines) :
-        data = yaml.load("\n".join(lines))
+        data = yaml.safe_load("\n".join(lines))
         return [r"""<div class="soundcloud-embedded"><iframe width="100%" height="450" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player?url=https://api.soundcloud.com/playlists/""" + "%s"%data["id"] + """&amp;visual=true"></iframe></div>"""]
 
 class BandCampBlock() :
     def evaluate(self,lines) :
-        data = yaml.load("\n".join(lines))
+        data = yaml.safe_load("\n".join(lines))
         return ["""<div class="bandcamp-embedded"><iframe style="border: 0; width: 350px; height: 555px;" src="https://bandcamp.com/EmbeddedPlayer/album=%s/size=large/bgcol=ffffff/linkcol=0687f5/transparent=true/" seamless><a href="%s">%s</a></iframe></div>""" % (data["id"],data["url"],data["description"])]
         
 class AudioBlock() :
     def evaluate(self,lines) :
-        data = yaml.load("\n".join(lines))
+        data = yaml.safe_load("\n".join(lines))
         if "mp3" in data :
             return ["""#### %s
 
@@ -151,7 +151,7 @@ Your browser does not support the audio element.
 
 class LocalFileBlock() :
     def evaluate(self,lines) :
-        data = yaml.load("\n".join(lines))
+        data = yaml.safe_load("\n".join(lines))
         try :
             f = open(data["path"])
             ext_lines = f.readlines()
@@ -174,7 +174,7 @@ class SimpleRawTranscludeBlock() :
         self.environment = env
 
     def evaluate(self,lines,md_eval=True) :
-        data = yaml.load("\n".join(lines))
+        data = yaml.safe_load("\n".join(lines))
         try :
             url = data["url"]
             response = urllib.request.urlopen(url)
@@ -200,7 +200,7 @@ class SimpleRawTranscludeBlock() :
 
 class CSVBlock() :
     def evaluate(self,lines,md_eval=True) :
-        data = yaml.load("\n".join(lines))
+        data = yaml.safe_load("\n".join(lines))
         try :
             build = ""
             with open(data["path"]) as csvfile :
@@ -217,7 +217,7 @@ class CSVBlock() :
     
 class GalleryBlockX() :
     def evaluate(self,lines,md_eval=False) :
-        data = yaml.load("\n".join(lines))
+        data = yaml.safe_load("\n".join(lines))
         try :
             build = """<div class="gallery">"""
             for k,v in data.items() :
@@ -234,7 +234,7 @@ class GalleryBlockX() :
 
 class GalleryBlock() :
     def evaluate(self,lines,md_eval=False) :
-        data = yaml.load("\n".join(lines))
+        data = yaml.safe_load("\n".join(lines))
         try :
             build = """<section><div class="container gal-container">
 """

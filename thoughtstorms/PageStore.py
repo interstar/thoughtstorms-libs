@@ -1,6 +1,14 @@
 from subprocess import check_output, CalledProcessError
+from fsquery import FSQuery
 
 import datetime, re, csv
+
+class PageCollection(list) :
+
+    def __init__(self,pageNames) :
+        list.__init__(self,pageNames)
+    
+    def as_set(self) : return set(self)    
 
 class PageStore :
 
@@ -71,31 +79,20 @@ class PageStore :
     def is_searchable(self) : return True
 
     def file_name_2_page_name(self,fName) :
-        print(fName)
         r = fName.split("/")[-1]
-        r = r[:-len(self.extension)-1]
-        print(r)
+        r = r.split(".")[0:-1]
+        r = ".".join(r)
         return r
 
     def search(self,text) :
-        try  :
-            res = check_output(["""grep -i "%s" %s/*.%s""" % (text,self.pages_dir,self.extension)], shell=True)
-            res = str(res)
-        except CalledProcessError as e :
-            if e.returncode == 1 :
-                return "No results"
-            else :
-                raise e
-        rs = res.split("\n")
-        def f(l) :
-            r = self.file_name_2_page_name(l.split(":")[0])
-            return "* [[%s]]" % r
-        rs = sorted(set([f(r) for r in rs ]))
-        return "\n".join(rs)
+        fsq = FSQuery(self.pages_dir).Ext(self.extension).Contains(text).FileOnly()
+        return PageCollection(sorted(set([self.file_name_2_page_name(n.abs) for n in fsq])))
 
     def all_pages(self) :
-        res = check_output(["ls %s/*.%s" % (self.pages_dir,self.extension)],shell=True).split("\n")
-        res = sorted(set([self.file_name_2_page_name(x) for x in res]))
+        res = check_output(["ls %s/*.%s" % (self.pages_dir,self.extension)],shell=True)
+        res = res.strip()
+        res = res.split(b"\n")
+        res = PageCollection(sorted(set([self.file_name_2_page_name(str(x)) for x in res])))
         return res
 
 

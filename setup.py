@@ -16,7 +16,7 @@ Note this is a Python3 library
       author_email='interstar@gmail.com',
       license='MIT',
       packages=['thoughtstorms'],
-      install_requires=["Markdown","PyYAML>=3.12"],
+      install_requires=["Markdown","PyYAML>=3.12","fsquery>=0.2.0"],
       classifiers=['Development Status :: 3 - Alpha',
                    'Intended Audience :: Developers'],
       zip_safe=False)
